@@ -24,6 +24,11 @@ START_TEST(sub_roman_numbers)
 {
 #line 11
     ck_assert_str_eq(subtract("II", "I"), "I");
+    ck_assert_str_eq(subtract("IX","V"), "IV");
+    ck_assert_str_eq(subtract("X","IX"), "I");
+    ck_assert_ptr_eq(subtract("L","C"), NULL);
+    ck_assert_str_eq(subtract("DXXIV","XXIX"), "CDXCV");
+    ck_assert_str_eq(subtract("CXXIX","XLIII"), "LXXXVI");
 }
 END_TEST
 
