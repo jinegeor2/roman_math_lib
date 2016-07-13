@@ -1,0 +1,13 @@
+Assumptionis: 
+1. Only valid roman numerals are passed. 
+2. Input sanity checking not enabled. 
+3. Max roman numeral supported is 3999.
+4. Roman addtion is done through string operations
+5. Roman subtraction is done by converting the numbers to decimal first
+6. Reference: http://turner.faculty.swau.edu/mathematics/materialslibrary/roman/  
+===============================================================================
+Compile instructions
+===============================================================================
+1. To create test file: checkmk roman_math_test.check > roman_math_test.c
+2. To compile the test: gcc -Wall -o roman_math_test roman_math_lib.c roman_math_test.c -lcheck -lrt -lpthread -lm -std=c99  
+
