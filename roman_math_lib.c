@@ -1,5 +1,7 @@
 // File: roman_calc_lib.c 
 // Description: Roman arithemetic operations
+// Assumption: Only valid roman numerals are passed. Input sanity checking not enabled. Max roman numeral supported is 3999
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -15,10 +17,11 @@ static int decimal_num[] = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 
 static char* roman_str[] = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
 #define MAX_ROMAN_STRING_SIZE 50
+#define MAX_SYMBOLS_SUPPORTED 7
 
 static int get_index(char ch, char arr[])
 {
-    for(int idx = 0; idx < 7; idx++)
+    for(int idx = 0; idx < MAX_SYMBOLS_SUPPORTED; idx++)
     {
         if(arr[idx] == ch)
         {
@@ -58,7 +61,7 @@ static void uncompact_roman_string(char *src)
 // Sort and combine roman symbols
 static void sort_and_combine_roman_string(char* src)
 {
-    int ch_count[7] = {0};
+    int ch_count[MAX_SYMBOLS_SUPPORTED] = {0};
     int length = strlen(src);
 
     // get the count of each symbols 
@@ -68,7 +71,7 @@ static void sort_and_combine_roman_string(char* src)
     }
 
     // combine symbols if required
-    for(int idx = 0; idx < 7; idx++)
+    for(int idx = 0; idx < MAX_SYMBOLS_SUPPORTED; idx++)
     {
         if(ch_count[0] >= 5)
         {
@@ -105,7 +108,7 @@ static void sort_and_combine_roman_string(char* src)
     // Update the string using the table
     int t = 0;
     memset(src,'\0',length);
-    for(int idx = 6; idx >= 0; idx--)
+    for(int idx = MAX_SYMBOLS_SUPPORTED - 1; idx >= 0; idx--)
     {
         int max = ch_count[idx];
         for( int i = 0; i < max; i++){
@@ -217,6 +220,7 @@ static char* decimal_to_roman( int number)
 }
 
 //Function to add two roman numbers
+// Input sanity checking not enabled. Use valid arguments
 char* add(char* first, char* second)
 {
     static char temp[MAX_ROMAN_STRING_SIZE] = {0};
@@ -249,13 +253,18 @@ char* add(char* first, char* second)
     return result;
 }
 
+// Function to subtract two roman numbers
+// Input sanity checking not enabled. Use valid arguments
 char* subtract(char* first, char* second)
 {
+    // Step 1 : Convert to decimal
     int num1 = roman_to_decimal(first);
     int num2 = roman_to_decimal(second);
 
+    // Step 2: Subtract the numbers in decimal
     int diff = num1 - num2;
 
+    // Step 3: Convert from decimal to roman
     if ( diff <= 0 )
     {
         printf("Invalid arguments passed....\n");
