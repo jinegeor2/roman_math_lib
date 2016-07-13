@@ -12,6 +12,7 @@ START_TEST(add_roman_numbers)
 {
 #line 4
     ck_assert_str_eq(add("I", "I"), "II");
+    ck_assert_str_eq(add("IV", "V"), "IX");
 }
 END_TEST
 

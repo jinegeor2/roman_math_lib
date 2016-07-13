@@ -110,13 +110,73 @@ static void sort_and_combine_roman_string(char* src)
     }
 }
 
+static void compact_subtractives(char *str)
+{
+    char *ptr = str;
+    int idx = 0;
+    int length = strlen(str);
+    char res[MAX_ROMAN_STRING_SIZE] = {0};
+    int t = 0;
+
+    while(idx < length)
+    {
+        if (strncmp((char*)(ptr+idx), "IIII", 4) == 0)
+        {
+            res[t++] = 'I';
+            res[t++] = 'V';
+            idx += 4;
+
+        }
+        if (strncmp((char*)(ptr+idx), "VIIII", 5) == 0)
+        {
+            res[t++] = 'I';
+            res[t++] = 'X';
+            idx += 5;
+        }
+        if (strncmp((char*)(ptr+idx), "XXXX", 4) == 0)
+        {
+            res[t++] = 'X';
+            res[t++] = 'L';
+            idx += 4;
+
+        }
+        if (strncmp((char*)(ptr+idx), "LXXXX", 5) == 0)
+        {
+            res[t++] = 'X';
+            res[t++] = 'C';
+            idx += 5;
+
+        }
+        if (strncmp((char*)(ptr+idx), "CCCC", 4) == 0)
+        {
+            res[t++] = 'C';
+            res[t++] = 'D';
+            idx += 4;
+
+        }
+              if (strncmp((char*)(ptr+idx), "DCCCC", 5) == 0)
+        {
+            res[t++] = 'C';
+            res[t++] = 'M';
+            idx += 5;
+
+        }
+        else
+        {
+            res[t++]=ptr[idx++];
+        }
+    }
+    strcpy(str, res);
+}
+
+
 //Function to add two roman numbers
 char* add(char* first, char* second)
 {
     static char temp[MAX_ROMAN_STRING_SIZE] = {0};
     static char result[MAX_ROMAN_STRING_SIZE] = {0};
 
-    memset(temp1,'\0',MAX_ROMAN_STRING_SIZE);
+    memset(temp,'\0',MAX_ROMAN_STRING_SIZE);
     memset(result,'\0',MAX_ROMAN_STRING_SIZE);
 
     // Step 1: Uncompact the roman number strings
@@ -137,6 +197,8 @@ char* add(char* first, char* second)
     // Step 3: Sort and combine strings
     sort_and_combine_roman_string(result);
 
+    // Step 4: Substitute any subtractives
+    compact_subtractives(result);
 
     return result;
 }
