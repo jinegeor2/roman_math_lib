@@ -13,6 +13,10 @@ START_TEST(add_roman_numbers)
 #line 4
     ck_assert_str_eq(add("I", "I"), "II");
     ck_assert_str_eq(add("IV", "V"), "IX");
+    ck_assert_str_eq(add("V","IV"), "IX");
+    ck_assert_str_eq(add("CDXCV","XXIX"), "DXXIV");
+    ck_assert_str_eq(add("XLIII","LXXXVI"), "CXXIX");
+
 }
 END_TEST
 
