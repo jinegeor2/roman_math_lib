@@ -1,0 +1,4 @@
+#include "roman_math_lib.h"
+
+#test add_roman_numbers
+    ck_assert_str_eq(add("I", "I"), "II");
