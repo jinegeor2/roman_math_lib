@@ -51,6 +51,65 @@ static void uncompact_roman_string(char *src)
     strcpy(src, tmp);
 }
 
+// Sort and combine roman symbols
+static void sort_and_combine_roman_string(char* src)
+{
+    int ch_count[7] = {0};
+    int length = strlen(src);
+
+    // get the count of each symbols 
+    for(int idx = 0; idx < length; idx++)
+    {
+        ch_count[get_index(src[idx], roman_char)]++;
+    }
+
+    // combine symbols if required
+    for(int idx = 0; idx < 7; idx++)
+    {
+        if(ch_count[0] >= 5)
+        {
+            ch_count[0] -= 5;
+            ch_count[1]++;
+        }
+        if(ch_count[1] >= 2)
+        {
+            ch_count[1] -= 2;
+            ch_count[2]++;
+        }
+        if(ch_count[2] >= 5)
+        {
+            ch_count[2] -= 5;
+            ch_count[3]++;
+        }
+        if(ch_count[3] >= 2)
+        {
+            ch_count[3] -= 2;
+            ch_count[4]++;
+        }
+        if(ch_count[4] >= 5)
+        {
+            ch_count[4] -= 5;
+            ch_count[5]++;
+        }
+        if(ch_count[5] >= 2)
+        {
+            ch_count[5] -= 2;
+            ch_count[6]++;
+        }
+    }
+
+    // Update the string using the table
+    int t = 0;
+    memset(src,'\0',length);
+    for(int idx = 6; idx >= 0; idx--)
+    {
+        int max = ch_count[idx];
+        for( int i = 0; i < max; i++){
+            src[t++] = roman_char[idx];
+        }
+    }
+}
+
 //Function to add two roman numbers
 char* add(char* first, char* second)
 {
@@ -71,6 +130,13 @@ char* add(char* first, char* second)
     memset(temp,'\0',MAX_ROMAN_STRING_SIZE);
     strcpy(temp, second);
     uncompact_roman_string(temp);
+
+    // Step 2: Concat both numbers together
+    strcat(result, temp);
+
+    // Step 3: Sort and combine strings
+    sort_and_combine_roman_string(result);
+
 
     return result;
 }
