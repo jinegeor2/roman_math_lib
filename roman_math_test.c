@@ -20,6 +20,13 @@ START_TEST(add_roman_numbers)
 }
 END_TEST
 
+START_TEST(sub_roman_numbers)
+{
+#line 11
+    ck_assert_str_eq(subtract("II", "I"), "I");
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -29,6 +36,7 @@ int main(void)
 
     suite_add_tcase(s1, tc1_1);
     tcase_add_test(tc1_1, add_roman_numbers);
+    tcase_add_test(tc1_1, sub_roman_numbers);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

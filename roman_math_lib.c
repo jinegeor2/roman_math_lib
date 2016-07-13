@@ -1,5 +1,6 @@
 // File: roman_calc_lib.c 
 // Description: Roman arithemetic operations
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "roman_math_lib.h"
@@ -9,6 +10,9 @@ static int decimal_val[] = {1, 5, 10, 50, 100, 500, 1000};
 
 static char roman_compact[] = "VXLCDM";
 static char* roman_xtnd[] = {"IIII","VIIII","XXXX","LXXXX","CCCC","DCCCC"};
+
+static int decimal_num[] = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+static char* roman_str[] = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
 #define MAX_ROMAN_STRING_SIZE 50
 
@@ -169,6 +173,48 @@ static void compact_subtractives(char *str)
     strcpy(str, res);
 }
 
+static int roman_to_decimal(char* str)
+{
+    int decimal_num = 0;
+    int temp = 0;
+    int prev_num = 0;
+
+    for(int idx = strlen(str) - 1; idx >= 0; idx--)
+    {
+        int cnt = get_index(str[idx], roman_char);
+        temp = decimal_val[cnt];
+
+        if ( temp < prev_num)
+        {
+            decimal_num -= temp;
+        }
+        else
+        {
+            decimal_num += temp;
+        }
+        prev_num = temp;
+    }
+    return decimal_num;
+}
+
+static char* decimal_to_roman( int number)
+{
+    int num = number;
+    int cnt = 0;
+    static char temp[MAX_ROMAN_STRING_SIZE] = {0};
+    memset(temp,'\0',MAX_ROMAN_STRING_SIZE);
+
+    for (int idx = 0;idx < sizeof(decimal_num)/sizeof(int); idx++)
+    {
+        while(num >= decimal_num[idx])
+        {
+            strcat((char*)(temp+cnt), roman_str[idx]);
+            cnt += strlen(roman_str[idx]);
+            num -= decimal_num[idx];
+        }
+    }
+    return temp;
+}
 
 //Function to add two roman numbers
 char* add(char* first, char* second)
@@ -201,4 +247,23 @@ char* add(char* first, char* second)
     compact_subtractives(result);
 
     return result;
+}
+
+char* subtract(char* first, char* second)
+{
+    int num1 = roman_to_decimal(first);
+    int num2 = roman_to_decimal(second);
+
+    int diff = num1 - num2;
+
+    if ( diff <= 0 )
+    {
+        printf("Invalid arguments passed....\n");
+        return NULL;
+    }
+    else
+    {
+        return decimal_to_roman(diff);
+    }
+
 }
